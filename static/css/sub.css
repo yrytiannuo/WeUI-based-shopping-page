@@ -1,0 +1,109 @@
+*{
+	margin:0;
+	padding:0;
+}
+.banner{
+	width: 100%;
+}
+.banner img{
+	width: 100%;
+}
+main{
+	width: 98%;
+    height: 40vh;
+    background: url(../images/main.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin: 0 auto;
+    overflow:hidden;
+    color:#fff;
+}
+main .content{
+	width: 75%;
+    margin: 12% auto;
+    height: 50%;
+}
+main p{
+	margin-left: 1em;
+	font-size: 1em;
+}
+main p:not(:first-child){
+	color:#f39b18;
+	font-size: .8em;
+}
+main p:not(:last-child){
+	margin-bottom: 1em;
+}
+main p:last-child{
+	color:#fff;
+}
+footer{
+	width: 92%;
+	overflow: hidden;
+	position: fixed;
+	bottom: 1rem;
+	left:4%;
+}
+footer .btn{
+	width:8rem;
+    background-color: rgb(4, 2, 66);
+    box-shadow: 0px 0px 11.96px 1.04px rgba(1, 75, 169, 0.82);
+    height: 2.8rem;
+    border-radius:2rem;
+    float: left;
+}
+footer .btn img{
+	width: 2rem;
+	margin-top: .5rem;
+    margin-left: 1rem;
+}
+footer .btn_us img{
+	margin-top: .4rem;
+}
+footer .btn_us{
+	color:#fff;
+}
+footer .btn_call{
+	color:#fff;
+	margin-left: 1.2rem;
+	float: right;
+}
+footer .btn span{
+	vertical-align: top;
+    margin-top: .6rem;
+    display: inline-block;
+    font-size: 1rem;
+}
+@media screen and (max-width: 374px) {
+	main p{
+		font-size: .8em;
+	}
+	main p:not(:first-child){
+		font-size: .6em;
+	}
+    footer .btn{
+		width:6.6rem;
+	    background-color: rgb(4, 2, 66);
+	    box-shadow: 0px 0px 11.96px 1.04px rgba(1, 75, 169, 0.82);
+	    height: 2.5rem;
+	    border-radius:2rem;
+	    float: left;
+	}
+	footer .btn img{
+		margin-top: .35rem;
+		width: 1.7rem;
+		margin-left: .7rem;
+	}
+	footer .btn_call{
+		float: right;
+	}
+	footer .btn_call img{
+		margin-top: .55rem;
+	}
+	footer .btn span{
+	    font-size: .7rem;
+	}
+	footer .btn_call span{
+	    margin-top: .7rem;
+	}
+}

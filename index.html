@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+	<title>智能购物</title>
+	<!-- head 中 -->
+	<link rel="stylesheet" href="static/css/weui.min.css">
+	<link rel="stylesheet" href="static/css/jquery-weui.min.css">
+	<link rel="stylesheet" href="static/css/swiper.min.css">
+	<link rel="stylesheet" href="static/css/index.css">
+</head>
+<body>
+	<!-- banner -->
+	<div class="noe_banner">
+		<div class="swiper-container">
+			<div class="swiper-wrapper">
+			  <div class="swiper-slide"><img src="static/images/banner1.png" alt=""></div>
+			  <div class="swiper-slide"><img src="static/images/banner1.png" alt=""></div>
+			  <div class="swiper-slide"><img src="static/images/banner1.png" alt=""></div>
+			  <div class="swiper-slide"><img src="static/images/banner1.png" alt=""></div>
+			</div>
+		  	<div class="swiper-pagination"></div>
+		</div>
+	</div>
+	<!-- 导航栏 -->
+	<div class="weui-tab">
+		<div class="nav">
+			<div class="weui-navbar">
+			  <a class="weui-navbar__item weui-bar__item--on" href="#tab1">饮料</a>
+			  <a class="weui-navbar__item" href="#tab2">食品</a>
+			  <a class="weui-navbar__item" href="#tab3">杂货</a>
+			</div>
+			<div class="noe_line_shadow"></div>
+		</div>
+	    <div class="weui-tab__bd">
+		    <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+		        <!-- <div class="weui-cells">
+				  <div class="weui-cell">
+				    <div class="weui-cell__bd">
+				      <img src="static/images/shop.png" alt="">
+				    </div>
+				    <div class="weui-cell__ft">
+				    	<h3>冰露矿泉水</h3>
+				    	<p>此商品参与打折</p>
+				    	<p class="surplus">余量<span>1</span></p>
+				    	<p class="price">￥2</p>
+				    </div>
+				    <div class="weui-cell__ri">
+				    	<span><img src="static/images/minus.png" alt=""></span>
+				    	<span class="num">12</span>
+				    	<span><img src="static/images/plus.png" alt=""></span>
+				    </div>
+				  </div>
+				</div>
+				<div class="weui-cells">
+				  <div class="weui-cell">
+				    <div class="weui-cell__bd">
+				      <img src="static/images/shop.png" alt="">
+				    </div>
+				    <div class="weui-cell__ft">说明文字</div>
+				  </div>
+				</div>
+				<div class="weui-cells">
+				  <div class="weui-cell">
+				    <div class="weui-cell__bd">
+				      <img src="static/images/shop.png" alt="">
+				    </div>
+				    <div class="weui-cell__ft">说明文字</div>
+				  </div>
+				</div>
+				<div class="weui-cells">
+				  <div class="weui-cell">
+				    <div class="weui-cell__bd">
+				      <img src="static/images/shop.png" alt="">
+				    </div>
+				    <div class="weui-cell__ft">
+				    	<h3>冰露矿泉水</h3>
+				    	<p>此商品参与打折</p>
+				    	<p class="surplus">余量<span>1</span></p>
+				    	<p class="price">￥2</p>
+				    </div>
+				    <div class="weui-cell__ri">
+				    	<span><img src="static/images/minus.png" alt=""></span>
+				    	<span class="num">12</span>
+				    	<span><img src="static/images/plus.png" alt=""></span>
+				    </div>
+				  </div>
+				</div>
+				<div class="weui-cells">
+				  <div class="weui-cell">
+				    <div class="weui-cell__bd">
+				      <img src="static/images/shop.png" alt="">
+				    </div>
+				    <div class="weui-cell__ft">
+				    	<h3>冰露矿泉水</h3>
+				    	<p>此商品参与打折</p>
+				    	<p class="surplus">余量<span>1</span></p>
+				    	<p class="price">￥2</p>
+				    </div>
+				    <div class="weui-cell__ri">
+				    	<span><img src="static/images/minus.png" alt=""></span>
+				    	<span class="num">12</span>
+				    	<span><img src="static/images/plus.png" alt=""></span>
+				    </div>
+				  </div>
+				</div>
+				<div class="weui-cells">
+				  <div class="weui-cell">
+				    <div class="weui-cell__bd">
+				      <img src="static/images/shop.png" alt="">
+				    </div>
+				    <div class="weui-cell__ft">
+				    	<h3>冰露矿泉水</h3>
+				    	<p>此商品参与打折</p>
+				    	<p class="surplus">余量<span>1</span></p>
+				    	<p class="price">￥2</p>
+				    </div>
+				    <div class="weui-cell__ri">
+				    	<span><img src="static/images/minus.png" alt=""></span>
+				    	<span class="num">12</span>
+				    	<span><img src="static/images/plus.png" alt=""></span>
+				    </div>
+				  </div>
+				</div> -->
+		    </div>
+		    <div id="tab2" class="weui-tab__bd-item">
+		    </div>
+		    <div id="tab3" class="weui-tab__bd-item">
+		    </div>
+	  	</div>
+	  	<!-- 购物车 -->
+		<aside>
+			<h5>购物车</h5>
+			<div class="weui-cells">
+			  <div class="weui-cell">
+			    <div class="weui-cell__bd">
+			      <img src="static/images/shop.png" alt="">
+			    </div>
+			    <span class="cart_shopName">冰露矿泉水</span>
+			    <span class="cart_price">￥2</span>
+			    <span class="cart_num">+2</span>
+			  </div>
+			  <div class="weui-cell">
+			    <div class="weui-cell__bd">
+			      <img src="static/images/shop.png" alt="">
+			    </div>
+			    <span class="cart_shopName">冰露矿泉水</span>
+			    <span class="cart_price">￥2</span>
+			    <span class="cart_num">+2</span>
+			  </div>
+			  <div class="weui-cell">
+			    <div class="weui-cell__bd">
+			      <img src="static/images/shop.png" alt="">
+			    </div>
+			    <span class="cart_shopName">冰露矿泉水</span>
+			    <span class="cart_price">￥2</span>
+			    <span class="cart_num">+2</span>
+			  </div>
+			</div>
+		</aside>
+	</div>
+    <script src="static/js/jquery.min.js"></script>
+    <script src="static/js/jquery-weui.min.js"></script>
+	<script src="static/js/swiper.min.js"></script>
+    <script>
+		$('.swiper-container').swiper({
+			speed: 1000,
+		    loop: true,
+		    pagination: '.swiper-pagination',
+      		paginationClickable: true,
+      		autoplay:3500
+		});
+	</script>
+	<script src="static/js/index.js"></script>
+</body>
+</html>

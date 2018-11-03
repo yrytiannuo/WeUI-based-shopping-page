@@ -1,0 +1,208 @@
+.swiper-container img{
+	width: 100%;
+}
+.weui-navbar{
+	width: 46.7%;
+	left: 50%;
+    margin-left: -23%;
+}
+.weui-navbar__item.weui-bar__item--on{
+	background-color: #fff;
+	color: #565580;
+}
+.weui-bar__item--on:after{
+	content: "";
+    position: absolute;
+    width: 100%;
+    height: 2.5px;
+    background: -moz-linear-gradient(left, #3e4276 0%, #ef9755 100%);
+    background: -webkit-linear-gradient(left, #3e4276 0%,#ef9755 100%);
+    background: -o-linear-gradient(left, #3e4276 0%,#ef9755 100%);
+    background: -ms-linear-gradient(left, #3e4276 0%,#ef9755 100%);
+    background: linear-gradient(to right, #3e4276 0%,#ef9755 100%);
+    left: 0;
+    bottom: -5px;
+    transform: scaleX(1);
+}
+.weui-navbar__item:after{
+	top: initial;
+}
+.weui-navbar__item:last-child:after {
+    display: block;
+}
+.weui-navbar:after,
+.weui-navbar__item:after{
+	border:none;
+}
+.weui-navbar__item{
+	font-size: .8rem;
+	padding:0;
+	border:none;
+	background-color: #fff;
+}
+.swiper-container-horizontal>.swiper-pagination-bullets{
+	bottom: 0;
+}
+
+
+
+
+
+
+
+
+
+.noe_banner{
+	width: 100vw;
+	height: 24vh;
+	position: fixed;
+    top: 0;
+    z-index: 1000;
+    background-color: #fff;
+}
+.nav{
+	width: 100%;
+    height: 5.7vh;
+    position: fixed;
+    z-index: 1000;
+    background-color: #fff;
+}
+.weui-tab{
+	overflow: hidden;
+	margin-top:23.5vh;
+}
+.noe_line_shadow {
+  box-shadow: 0px 2px 2px 0.01px rgba(4, 0, 0, 0.17);
+  width: 100%;
+  height: 2px;
+  margin-top:1.5rem;
+}
+.weui-tab__bd{
+	width: 74%;
+	box-sizing: border-box;
+	padding: 4% 2%;
+	margin-top: 1.8rem;
+}
+.weui-tab__bd-item .weui-cells {
+  border-radius: 20px;
+  box-shadow: 0px 0px 8.55px 0.45px rgba(4, 0, 0, 0.17);
+  width: 99%;
+  margin: 0 auto 6%;
+  height: 16.3vh;
+}
+.weui-tab__bd-item .weui-cell,.weui-tab__bd-item .weui-cell__bd,.weui-tab__bd-item .weui-cell__bd img{
+	height: 100%;
+}
+.weui-tab__bd-item .weui-cell{
+	line-height: 1.2;
+	padding: 0;
+}
+.weui-tab__bd-item .weui-cell__bd{
+	width: 37.9%;
+	flex: 0;
+}
+.weui-tab__bd-item .weui-cell__ft{
+	text-align: left;
+	line-height: 1.5
+}
+.weui-tab__bd-item .weui-cell__ft h3{
+	color:#000;
+	font-size: .9rem;
+    font-weight: 400;
+}
+.weui-tab__bd-item .weui-cell__ft p{
+	font-size: .6rem;
+	color:#000;
+}
+.weui-tab__bd-item .weui-cell__ft .surplus{
+	font-size: .7rem;
+	margin-bottom: .2rem;
+	color: #b8b8b8;
+}
+.weui-tab__bd-item .weui-cell__ft .price{
+	color:#f39b18;
+	font-size: .9rem;
+}
+.weui-tab__bd-item .weui-cell__ri{
+	position: absolute;
+	bottom:.2rem;
+	right: 1rem;
+	font-size: 0;
+}
+.weui-tab__bd-item .weui-cell__ri img{
+	width: 1rem;
+}
+.weui-tab__bd-item .weui-cell__ri span{
+	display: inline-block;
+	vertical-align: middle;
+	color:#f39b18;
+	font-size: .7rem;
+}
+.weui-tab__bd-item .weui-cell__ri span:first-child,
+.weui-tab__bd-item .weui-cell__ri span:last-child{
+	width: 1.2rem;
+	height: 1.2rem;
+}
+.weui-tab__bd-item .weui-cell__ri span:last-child{
+	text-align: right;
+}
+.weui-tab__bd-item .weui-cell__ri .num{
+    margin-right: .15rem;
+    width: .8rem;
+    text-align: center;
+}
+aside{
+	width: 26%;
+    height: 72vh;
+    position: fixed;
+    right: 0;
+    top: 29.2vh;
+}
+aside:before{
+	content: "";
+	width: .08rem;
+	height: 100%;
+	left: -0.1rem;
+	position: absolute;
+	background: -moz-linear-gradient(bottom, #3e4276 0%, #ef9755 100%);
+    background: -webkit-linear-gradient(bottom, #3e4276 0%,#ef9755 100%);
+    background: -o-linear-gradient(bottom, #3e4276 0%,#ef9755 100%);
+    background: -ms-linear-gradient(bottom, #3e4276 0%,#ef9755 100%);
+    background: linear-gradient(to top, #3e4276 0%,#ef9755 100%);
+}
+aside .weui-cell{
+	padding:0;
+}
+aside .weui-cell img{
+	width: 4rem;
+    margin-left: -.5rem;
+}
+aside .weui-cell span{
+	position: absolute;
+}
+aside .cart_shopName{
+	top: 0.5rem;
+    left: 1.5rem;
+    font-size: 0.6rem;
+
+}
+aside .cart_price{
+	top: 1.7rem;
+    left: 1.5rem;
+}
+aside .cart_num{
+	top:1.7rem;
+	right: .45rem;
+	color:#f39b18;
+}
+@media screen and (max-width: 360px) {
+    aside .cart_shopName{
+	    font-size: 0.5rem;
+	}
+	aside .cart_price{
+		font-size: 0.7rem;
+	}
+	aside .cart_num{
+		font-size: 0.7rem;
+	}
+}
