@@ -24,13 +24,12 @@ $(function(){
 			oraigin_money: 0,
       discount_money: 0,
       bigred_money: 0,
-			sum: 0,
       vip_lv: '',
-      vip_discount: '',
+      vip_discount: 1,
       redball: '',
-      opendid: '',
+      openid: '',
 			init: function(opendid,vip_lv,vip_discount,redball){
-        this.opendid = opendid;
+        this.openid = opendid;
         this.redball = redball;
 				this.vip_lv = vip_lv;
 				this.vip_discount = vip_discount;
@@ -39,7 +38,7 @@ $(function(){
         var big = 0;
         for(var i in this.redball){
           if(i.state == 0 && i.amount>big){
-              big = amount;
+              big = i.amount;
           }
         }
         this.bigred_money = big;
@@ -51,6 +50,7 @@ $(function(){
   //购物车对象
   function CreateCart(){
     var cart = {
+      vm_id: $.cookie('vmid'),
       data: {
         goodsids: [],
         goodsnames: [],
@@ -95,7 +95,7 @@ $(function(){
         this.data.goodsprices.push(goodArrObj[index][name].price);
         this.data.goodspassagenos.push(goodArrObj[index][name].passage_no.pop());
         if(goodArrObj[index][name].can_discount == 1){
-          currentpayer.discount_money += Number(goodArrObj[index][name].price)*currentpayer.vip_discount;
+          currentpayer.discount_money += Number(goodArrObj[index][name].price)*Number(currentpayer.vip_discount);
           currentpayer.oraigin_money += Number(goodArrObj[index][name].price);
         }else{
           currentpayer.discount_money += Number(goodArrObj[index][name].price);
@@ -120,10 +120,12 @@ $(function(){
     return cart;
   }
   function showCartDetail(){
-    $('.originalprice span').text(currentpayer.oraigin_money);
-    $('.discountprice').text(currentpayer.discount_money);
-    $('.membershipprice').text(currentpayer.oraigin_money-currentpayer.discount_money);
-    $('.redenvelopesprice').text(currentpayer.discount_money);
+    currentpayer.bigred();
+    $('.originalprice span').text(currentpayer.oraigin_money.toFixed(2));
+    $('.discountprice span').text((currentpayer.discount_money.toFixed(2)-currentpayer.bigred_money.toFixed(2)).toFixed(2));
+    $('.ship').text(currentpayer.vip_lv);
+    $('.membershipprice').text((currentpayer.oraigin_money.toFixed(2)-currentpayer.discount_money.toFixed(2)).toFixed(2));
+    $('.redenvelopesprice').text(currentpayer.bigred_money.toFixed(2));
   }
   //根据不同浏览器获取不同的用户信息（红包，vip等级）
   function browser(){
@@ -156,7 +158,7 @@ $(function(){
         data:{"auth_code":auth_code},
         success:function(data){
           if(data.err=="0"){
-            currentpayer.init(data.userId,data.vip_lv,data.discount);
+            currentpayer.init(data.userId,data.vip_lv,data.discount,data.coupon);
           }else{
             $.toptip('操作失败', 'error');
           }
@@ -176,16 +178,15 @@ $(function(){
     return null;
   }
 
-
   //商品列表初始化
   function goodinit(){
     $.ajax({
       type: "POST",
       dataType:"json",
       async: false,
-      url: "passage/shopquery.do" || "http://tazrq.xunshengkeji.com/one/"+"passage/shopquery.do",
+      url: "passage/shopquery.do",//http://tazrq.xunshengkeji.com/one/
       data:{
-        vmid : $.cookie('vmid')//"2511551188"
+        vmid : $.cookie('vmid') || "2511551188"
       },
       success:function (data) {
         console.log(data);
@@ -266,7 +267,6 @@ $(function(){
     return goodArrObj;
   }
   function add_goodlist(data){//初始化商品列表
-    console.log(data);
     for(var i=0;i<data.length;i++){
       $("#tab"+(i+1)).empty();
       for(var j in data[i]){
@@ -314,18 +314,15 @@ $(function(){
       $(this).prev().text(num);
       var sur = Number($(this).parents('.weui-cell').find('.surplus span').text()) - 1;
       $(this).parents('.weui-cell').find('.surplus span').text(sur);
-      console.log(goodArrObj);
     }
   });
 
 
-  $('#pay').on('click',function(){
+  $('.topay').on('click',function(){
     if(isWeiXin()&&currentcart.data.goodsids.length>0){
-      currentpayer.bigred();
-       wxPay();
+      wxPay();
     }else if(isAli()&&currentcart.data.goodsids.length>0){
-      currentpayer.bigred();
-       aliPay();
+      aliPay();
     }
   });
   function wxPay(){
@@ -338,7 +335,7 @@ $(function(){
       if(currentcart.data.goodsids.length>1){
         subject = "多个商品";
       }else{
-        subject = goodname[0];
+        subject = currentcart.data.goodsnames[0];
       }
       var reqJson={
           //appid:id,
@@ -366,15 +363,15 @@ $(function(){
                 dataType:"json",
                 url: "pay/success.do",
                 data:{
-                  vmid: vm_id,
-                  buyer_id: openid,
+                  vmid: currentcart.vm_id,
+                  buyer_id: currentpayer.openid,
                   order_no: prepayid.split('=')[1],
                   goods_nos: currentcart.data.goodsids.join(','),
                   goods_names: currentcart.data.goodsnames.join(','),
                   prices: currentcart.data.goodsprices.join(','),
                   method: "微信",
                   out_trade_no: product_id,
-                  discount: currentpayer.vip_dicount,
+                  discount: currentpayer.vip_discount,
                   passage_nos: currentcart.data.goodspassagenos.join(',')
                 },
                 success:function(){
@@ -432,7 +429,7 @@ $(function(){
         }
     }
 
-    function aliPay(){
+  function aliPay(){
       //调起下单接口，记得先引入jquery
       var goodsid=currentcart.goodsids.join(',');
       var price=currentpayer.discount_money-currentpayer.bigred_money;
@@ -443,10 +440,9 @@ $(function(){
       if(currentcart.data.goodsids.length>1){
         subject = "多个商品";
       }else{
-        subject = goodname[0];
+        subject = currentcart.data.goodsnames[0];
       }
       var reqJson={
-          //appid:id,
           goodsid:goodsid,
           price:price,
           product_id:product_id,
@@ -462,15 +458,15 @@ $(function(){
                dataType:"json",
                url: "pay/success.do",
                data:{
-                 vmid: vm_id,
-                 buyer_id: userId,
+                 vmid:currentcart.vm_id,
+                 buyer_id: currentpayer.openid,
                  order_no: trade_no,
                  goods_nos: currentcart.data.goodsids.join(','),
                  goods_names: currentcart.data.goodsnames.join(','),
                  prices: currentcart.data.goodsprices.join(','),
                  method: "支付宝",
                  out_trade_no: product_id,
-                 discount: currentpayer.vip_dicount,
+                 discount: currentpayer.vip_discount,
                  passage_nos: currentcart.data.goodspassagenos.join(',')
                },
                success:function(){

@@ -1,3 +1,6 @@
+body{
+	background-color: #fff;
+}
 .swiper-container img{
 	width: 100%;
 }
@@ -43,15 +46,6 @@
 .swiper-container-horizontal>.swiper-pagination-bullets{
 	bottom: 0;
 }
-
-
-
-
-
-
-
-
-
 .noe_banner{
 	width: 100vw;
 	height: 24vh;
@@ -64,12 +58,11 @@
 	width: 100%;
     height: 5.7vh;
     position: fixed;
-    z-index: 1000;
     background-color: #fff;
 }
 .weui-tab{
 	overflow: hidden;
-	margin-top:23.5vh;
+	margin-top:26vh;
 }
 .noe_line_shadow {
   box-shadow: 0px 2px 2px 0.01px rgba(4, 0, 0, 0.17);
@@ -88,7 +81,7 @@
   box-shadow: 0px 0px 8.55px 0.45px rgba(4, 0, 0, 0.17);
   width: 99%;
   margin: 0 auto 6%;
-  height: 16.3vh;
+  height: 17vh;
 }
 .weui-tab__bd-item .weui-cell,.weui-tab__bd-item .weui-cell__bd,.weui-tab__bd-item .weui-cell__bd img{
 	height: 100%;
@@ -96,6 +89,7 @@
 .weui-tab__bd-item .weui-cell{
 	line-height: 1.2;
 	padding: 0;
+	font-size: 1rem;
 }
 .weui-tab__bd-item .weui-cell__bd{
 	width: 37.9%;
@@ -103,12 +97,14 @@
 }
 .weui-tab__bd-item .weui-cell__ft{
 	text-align: left;
-	line-height: 1.5
+	height: 100%;
+    overflow: hidden;
 }
 .weui-tab__bd-item .weui-cell__ft h3{
 	color:#000;
-	font-size: .9rem;
+	font-size: .8rem;
     font-weight: 400;
+    margin-top: .6em;
 }
 .weui-tab__bd-item .weui-cell__ft p{
 	font-size: .6rem;
@@ -116,12 +112,12 @@
 }
 .weui-tab__bd-item .weui-cell__ft .surplus{
 	font-size: .7rem;
-	margin-bottom: .2rem;
+	margin-top: 1em;
 	color: #b8b8b8;
 }
 .weui-tab__bd-item .weui-cell__ft .price{
 	color:#f39b18;
-	font-size: .9rem;
+	font-size: .8rem;
 }
 .weui-tab__bd-item .weui-cell__ri{
 	position: absolute;
@@ -156,7 +152,11 @@ aside{
     height: 72vh;
     position: fixed;
     right: 0;
-    top: 29.2vh;
+    top: 32vh;
+}
+aside h5{
+	text-align: center;
+	margin-top: .4rem;
 }
 aside:before{
 	content: "";
@@ -173,9 +173,15 @@ aside:before{
 aside .weui-cells{
 	height: 40vh;
 	overflow-y: scroll;
+	margin-top: .5rem;
+}
+aside .weui-cells:before,
+aside .weui-cells:after{
+	display: none;
 }
 aside .weui-cell{
 	padding:0;
+	height: 10vh;
 }
 aside .weui-cell img{
 	width: 2rem;
@@ -192,12 +198,12 @@ aside .cart_shopName{
 	line-height: 1;
 }
 aside .cart_price{
-	top: 2rem;
+	top: 1.8rem;
     left: 1.5rem;
 }
 aside .cart_num{
-	top:2rem;
-	right: 1rem;
+	top:1.8rem;
+	right: 0.7rem;
 	color:#f39b18;
 }
 aside .weui-cell .weui-cell__bd{
