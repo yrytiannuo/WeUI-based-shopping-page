@@ -10,18 +10,21 @@
 }
 main{
 	width: 98%;
-    height: 40vh;
+    height: 57vh;
     background: url(../images/main.png);
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: cover;
     margin: 0 auto;
     overflow:hidden;
     color:#fff;
 }
 main .content{
 	width: 75%;
-    margin: 12% auto;
-    height: 50%;
+    margin: 18% auto;
+    text-align: center;
+}
+main .content img{
+	width: 42%;
 }
 main p{
 	margin-left: 1em;
@@ -45,17 +48,18 @@ footer{
 	left:4%;
 }
 footer .btn{
-	width:8rem;
+	width:100%;
     background-color: rgb(4, 2, 66);
     box-shadow: 0px 0px 11.96px 1.04px rgba(1, 75, 169, 0.82);
     height: 2.8rem;
     border-radius:2rem;
     float: left;
+    text-align: center;
 }
 footer .btn img{
 	width: 2rem;
 	margin-top: .5rem;
-    margin-left: 1rem;
+    margin-right: 1rem;
 }
 footer .btn_us img{
 	margin-top: .4rem;
@@ -68,11 +72,12 @@ footer .btn_call{
 	margin-left: 1.2rem;
 	float: right;
 }
-footer .btn span{
+footer .btn a{
 	vertical-align: top;
     margin-top: .6rem;
     display: inline-block;
     font-size: 1rem;
+    color:#fff;
 }
 @media screen and (max-width: 374px) {
 	main p{
@@ -82,7 +87,7 @@ footer .btn span{
 		font-size: .6em;
 	}
     footer .btn{
-		width:6.6rem;
+		width:100%;
 	    background-color: rgb(4, 2, 66);
 	    box-shadow: 0px 0px 11.96px 1.04px rgba(1, 75, 169, 0.82);
 	    height: 2.5rem;

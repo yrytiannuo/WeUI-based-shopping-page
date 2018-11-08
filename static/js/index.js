@@ -21,22 +21,113 @@ $(function(){
   //购买者对象
 	function CreatePayer(){
 		var payer = {
-			money: 0,
+			oraigin_money: 0,
+      discount_money: 0,
+      bigred_money: 0,
 			sum: 0,
-      vip_lv: null,
-      vip_discount: null,
-			init: function(vip_lv,vip_discount){
+      vip_lv: '',
+      vip_discount: '',
+      redball: '',
+      opendid: '',
+			init: function(opendid,vip_lv,vip_discount,redball){
+        this.opendid = opendid;
+        this.redball = redball;
 				this.vip_lv = vip_lv;
 				this.vip_discount = vip_discount;
-			}
+			},
+      bigred: function(){
+        var big = 0;
+        for(var i in this.redball){
+          if(i.state == 0 && i.amount>big){
+              big = amount;
+          }
+        }
+        this.bigred_money = big;
+      }
 		}
 		return payer;
 	};
 
-
+  //购物车对象
+  function CreateCart(){
+    var cart = {
+      data: {
+        goodsids: [],
+        goodsnames: [],
+        goodsprices: [],
+        goodspassagenos: []
+      },
+      deleteCart: function(name,index){
+        var temp_goodid = goodArrObj[index][name].goods_no;
+        var goodid_index =  this.data.goodsids.indexOf(temp_goodid);
+        var temp_no = this.data.goodspassagenos[goodid_index];
+        if(goodid_index > -1){
+          this.data.goodsids.splice(goodid_index,1);
+          this.data.goodsnames.splice(goodid_index,1);
+          this.data.goodsprices.splice(goodid_index,1);
+          this.data.goodspassagenos.splice(goodid_index,1);
+        }
+        if(goodArrObj[index][name].can_discount == 1){
+          currentpayer.discount_money -= Number(goodArrObj[index][name].price)*currentpayer.vip_discount;
+          currentpayer.oraigin_money -= Number(goodArrObj[index][name].price);
+        }else{
+          currentpayer.discount_money -= Number(goodArrObj[index][name].price);
+          currentpayer.oraigin_money -= Number(goodArrObj[index][name].price);
+        }
+        goodArrObj[index][name].passage_no.push(temp_no);
+        for(var i=0;i<$('.cart_shopName').length;i++){
+          if($('.cart_shopName')[i].innerText == name&&$('.cart_num span')[i].innerText>1){
+            $("aside .cart_num span")[i].innerText = Number($("aside .cart_num span")[i].innerText)-1;
+          }else if($('.cart_shopName')[i].innerText == name && $('.cart_num span')[i].innerText==1){
+            $('.cart_num').eq(i).parents('.weui-cell').remove();
+          }
+        }
+        if(this.data.goodsids.length == 0){
+          $(".pay").css("opacity","0");
+        }else{
+          showCartDetail();
+        }
+      },
+      addCart: function(name,index,flag){
+        $(".pay").css("opacity","1");
+        this.data.goodsids.push(goodArrObj[index][name].goods_no);
+        this.data.goodsnames.push(name);
+        this.data.goodsprices.push(goodArrObj[index][name].price);
+        this.data.goodspassagenos.push(goodArrObj[index][name].passage_no.pop());
+        if(goodArrObj[index][name].can_discount == 1){
+          currentpayer.discount_money += Number(goodArrObj[index][name].price)*currentpayer.vip_discount;
+          currentpayer.oraigin_money += Number(goodArrObj[index][name].price);
+        }else{
+          currentpayer.discount_money += Number(goodArrObj[index][name].price);
+          currentpayer.oraigin_money += Number(goodArrObj[index][name].price);
+        }
+        if(flag == 1){
+          var $ele = $("<div class='weui-cell'><div class='weui-cell__bd'>"+
+            "<img src='"+imgurl+goodArrObj[index][name].pic+"'></div><span class='cart_shopName'>"+
+            ""+name+"</span><span class='cart_price'>￥<span>"+goodArrObj[index][name].price+"</span></span><span class='cart_num'>"+
+            "+<span>1</span></span></div>");
+          $('aside .weui-cells').append($ele);
+        }else{
+          for(var i=0;i<$('.cart_shopName').length;i++){
+            if($('.cart_shopName')[i].innerText == name){
+              $("aside .cart_num span")[i].innerText = Number($("aside .cart_num span")[i].innerText)+1;
+            }
+          }
+        }
+        showCartDetail();
+      }
+    }
+    return cart;
+  }
+  function showCartDetail(){
+    $('.originalprice span').text(currentpayer.oraigin_money);
+    $('.discountprice').text(currentpayer.discount_money);
+    $('.membershipprice').text(currentpayer.oraigin_money-currentpayer.discount_money);
+    $('.redenvelopesprice').text(currentpayer.discount_money);
+  }
   //根据不同浏览器获取不同的用户信息（红包，vip等级）
   function browser(){
-    var vm_id = "3214317625"//$.cookie('vmid');
+    var vm_id = $.cookie('vmid');//"9000000002"
     if(isWeiXin()){
       var code= getUrlParam("code");
       $.ajax({
@@ -46,14 +137,13 @@ $(function(){
           data:{"code":code,"vmid":vm_id},
           success:function(data){
             if(data.err=="0"){
-              // openid=data.openid;
-              // vip_lv=data.vip_lv;
-              // vip_dicount=data.discount;
-              currentpayer.init(data.openid,data.vip_lv,data.discount);
+              currentpayer.init(data.openid,data.vip_lv,data.discount,data.coupon);
             }else{
+              $.toptip('操作失败', 'error');
             }
           },
           error:function(){
+            $.toptip('操作失败', 'error');
           }
       });
     }
@@ -66,21 +156,17 @@ $(function(){
         data:{"auth_code":auth_code},
         success:function(data){
           if(data.err=="0"){
-            // userId=data.userId;
-            // vip_lv=data.vip_lv;
-            // vip_dicount=data.discount;
             currentpayer.init(data.userId,data.vip_lv,data.discount);
           }else{
-            alert(data.err)
+            $.toptip('操作失败', 'error');
           }
         },
         error:function(){
-          alert("error")
+          $.toptip('操作失败', 'error');
         }
       });
     }
   }
-
 
   //获取参数
   function getUrlParam(name){
@@ -97,12 +183,13 @@ $(function(){
       type: "POST",
       dataType:"json",
       async: false,
-      url: "http://tazrq.xunshengkeji.com/one/"+"passage/shopquery.do",
+      url: "passage/shopquery.do" || "http://tazrq.xunshengkeji.com/one/"+"passage/shopquery.do",
       data:{
-        vmid : "3214317625"//$.cookie('vmid')
+        vmid : $.cookie('vmid')//"2511551188"
       },
       success:function (data) {
         console.log(data);
+        imgurl = data.ip;
         obj = data;
         if(data.arr.length>0){
           var goodsdetail = add_goodtype(data);//初始化商品类别
@@ -142,7 +229,7 @@ $(function(){
       for(var j in data.arr){
         var objInit = {
           goods_no: '',
-          passage_no: '',
+          passage_no: [],
           can_discount: '',
           pic: '',
           price: '',
@@ -158,8 +245,8 @@ $(function(){
       for(var j in data.arr){
         var obj ={
             goods_no: data.arr[j].goods_no,
-            passage_no: data.arr[j].passage_no,
             surplus: data.arr[j].surplus,
+            passage_no: data.arr[j].passage_no,
             can_discount: data.arr[j].can_discount,
             pic: data.arr[j].pic,
             price: data.arr[j].price
@@ -168,9 +255,11 @@ $(function(){
           goodArrObj[i][data.arr[j].name]["surplus"] += obj.surplus;
           goodArrObj[i][data.arr[j].name]["goods_no"] = obj.goods_no;
           goodArrObj[i][data.arr[j].name]["can_discount"] = obj.can_discount;
-          goodArrObj[i][data.arr[j].name]["pic"] = obj.pic;
+          goodArrObj[i][data.arr[j].name]["pic"] = "/pic/"+obj.pic;
           goodArrObj[i][data.arr[j].name]["price"] = obj.price;
-          goodArrObj[i][data.arr[j].name]["passage_no"] += (obj.goods_no+",");
+          for(var k=0;k<obj.surplus;k++){
+            goodArrObj[i][data.arr[j].name]["passage_no"].push(obj.passage_no);
+          }
         }
       }
     }
@@ -178,14 +267,12 @@ $(function(){
   }
   function add_goodlist(data){//初始化商品列表
     console.log(data);
-    var img_url = "http://tazrq.xunshengkeji.com/pic/";//图片图片
     for(var i=0;i<data.length;i++){
       $("#tab"+(i+1)).empty();
       for(var j in data[i]){
-        console.log(data[i][j]['surplus']);
         var $ele = $("<div class='weui-cells'><div class='weui-cell'>"+
-                "<div class='weui-cell__bd'><img src='"+img_url+data[i][j]['pic']+"'>"+
-                "</div><div class='weui-cell__ft'><h3>"+j+"</h3><p>"+((data[i][j]['can_discount']==1)?'此商品参与打折':'此商品不参与打折')+"</p>"+
+                "<div class='weui-cell__bd'><img src='"+imgurl+data[i][j]['pic']+"'>"+
+                "</div><div class='weui-cell__ft'><h3 class='goodname'>"+j+"</h3><p>"+((data[i][j]['can_discount']==1)?'此商品参与打折':'此商品不参与打折')+"</p>"+
                 "<p class='surplus'>余量<span>"+data[i][j]['surplus']+"</span></p><p class='price'>￥"+data[i][j]['price']+"</p>"+
                 "</div><div class='weui-cell__ri'><span class='minus'><img src='static/images/minus.png'>"+
                 "</span><span class='num'>0</span><span class='plus'><img src='static/images/plus.png'>"+
@@ -199,30 +286,253 @@ $(function(){
     goodinit();//添加商品
     currentpayer = CreatePayer();
     browser();//判断支付类型
+    currentcart = CreateCart();
   })();
 
   $('body').on('click','.minus',function(){
-    deleteCart();
+    if($(this).next().text()!=0){
+      var index = $(this).parents('.weui-tab').find('.weui-bar__item--on').index();
+      var data_name = $(this).parents('.weui-cell').find('.goodname').text();
+      currentcart.deleteCart(data_name,index);
+      var num = Number($(this).next().text()) - 1;
+      $(this).next().text(num);
+      var sur = Number($(this).parents('.weui-cell').find('.surplus span').text()) + 1;
+      $(this).parents('.weui-cell').find('.surplus span').text(sur);
+      console.log(goodArrObj);
+    }
   });
   $('body').on('click','.plus',function(){
-    addCart();
+    if($(this).parents('.weui-cell').find('.surplus span').text()>0){
+      var index = $(this).parents('.weui-tab').find('.weui-bar__item--on').index();
+      var data_name = $(this).parents('.weui-cell').find('.goodname').text();
+      if($.inArray(data_name,currentcart.data.goodsnames)!=-1){
+        currentcart.addCart(data_name,index,0);
+      }else{
+        currentcart.addCart(data_name,index,1);
+      }
+      var num = Number($(this).prev().text()) + 1;
+      $(this).prev().text(num);
+      var sur = Number($(this).parents('.weui-cell').find('.surplus span').text()) - 1;
+      $(this).parents('.weui-cell').find('.surplus span').text(sur);
+      console.log(goodArrObj);
+    }
   });
 
 
+  $('#pay').on('click',function(){
+    if(isWeiXin()&&currentcart.data.goodsids.length>0){
+      currentpayer.bigred();
+       wxPay();
+    }else if(isAli()&&currentcart.data.goodsids.length>0){
+      currentpayer.bigred();
+       aliPay();
+    }
+  });
+  function wxPay(){
+      //var id="0000100001";
+      var goodsid=currentcart.data.goodsids.join(',');
+      var price=currentpayer.discount_money-currentpayer.bigred_money;
+      var date=new Date();
+      var product_id="testwanzhong"+date.getHours()+date.getMinutes()+date.getSeconds();
+      var subject;
+      if(currentcart.data.goodsids.length>1){
+        subject = "多个商品";
+      }else{
+        subject = goodname[0];
+      }
+      var reqJson={
+          //appid:id,
+          goodsid:goodsid,
+          price:price,
+          product_id:product_id,
+          subject:subject
+      };
+      reqJson.openid=currentpayer.openid;
+      reqJson.price=reqJson.price*100;
+      reqJson.price=parseInt(reqJson.price);
+      if(true){
+        $.ajax({url:"wx/pay.do",
+          data:reqJson,
+          dataType:"json",
+          success:function(data){
+            var json=data;
+            var appid=json.appId;
+            var prepayid=json.package;
+            var timeStamp=json.timeStamp;
+            var sign=json.sign;
+            var nonceStr=json.nonceStr;
+            $.ajax({
+                type: "POST",
+                dataType:"json",
+                url: "pay/success.do",
+                data:{
+                  vmid: vm_id,
+                  buyer_id: openid,
+                  order_no: prepayid.split('=')[1],
+                  goods_nos: currentcart.data.goodsids.join(','),
+                  goods_names: currentcart.data.goodsnames.join(','),
+                  prices: currentcart.data.goodsprices.join(','),
+                  method: "微信",
+                  out_trade_no: product_id,
+                  discount: currentpayer.vip_dicount,
+                  passage_nos: currentcart.data.goodspassagenos.join(',')
+                },
+                success:function(){
+                },
+                error:function(){
+                }
+              });
+            if (typeof WeixinJSBridge == "undefined"){
+              if( document.addEventListener ){
+                      document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+                  }else if (document.attachEvent){
+                      document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+                      document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+                  }
+              }else{
+                  onBridgeReady();
+              }
+              function onBridgeReady(){
+                  WeixinJSBridge.invoke(
+                          'getBrandWCPayRequest', {
+                              "appId" : appid,     //公众号名称，由商户传入
+                              "timeStamp":timeStamp,         //时间戳，自1970年以来的秒数
+                              "nonceStr" : nonceStr, //随机串
+                              "package" : prepayid,
+                              "signType" : "MD5",         //微信签名方式:
+                              "paySign" : sign //微信签名
+                          },
+                          function(res){
+                            switch (res.err_msg) {
+                              case "get_brand_wcpay_request:ok":
+                                reqJson.status="支付成功,等待出货";
+                                break;
+                              case "get_brand_wcpay_request:cancel":
+                                reqJson.status="用户取消支付";
+                                break;
+                              case "get_brand_wcpay_request:fail":
+                                reqJson.status="支付失败";
+                                break;
+                              default:
+                                reqJson.status="支付结果异常";
+                                break;
+                              }
+                            if(reqJson.status == "支付成功,请等待出货"){
+                              window.location.href="../../sub/end.html";
+                            }
+                          }
+                  );
+              }
+            },
+            error:function(){
+              alert("error");
+            }
+        }
+        );
+        }
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    function aliPay(){
+      //调起下单接口，记得先引入jquery
+      var goodsid=currentcart.goodsids.join(',');
+      var price=currentpayer.discount_money-currentpayer.bigred_money;
+      price = price.toFixed(2);
+      var date=new Date();
+      var product_id="testwanzhong"+date.getHours()+date.getMinutes()+date.getSeconds();
+      var subject;
+      if(currentcart.data.goodsids.length>1){
+        subject = "多个商品";
+      }else{
+        subject = goodname[0];
+      }
+      var reqJson={
+          //appid:id,
+          goodsid:goodsid,
+          price:price,
+          product_id:product_id,
+          subject:subject
+      };
+         reqJson.userId=currentpayer.openid;
+         if(true){
+         $.post("ali/pay.do",reqJson,function(data){
+           var json=eval("("+data+")").alipay_trade_create_response;
+           var trade_no=json.trade_no;
+           $.ajax({
+               type: "POST",
+               dataType:"json",
+               url: "pay/success.do",
+               data:{
+                 vmid: vm_id,
+                 buyer_id: userId,
+                 order_no: trade_no,
+                 goods_nos: currentcart.data.goodsids.join(','),
+                 goods_names: currentcart.data.goodsnames.join(','),
+                 prices: currentcart.data.goodsprices.join(','),
+                 method: "支付宝",
+                 out_trade_no: product_id,
+                 discount: currentpayer.vip_dicount,
+                 passage_nos: currentcart.data.goodspassagenos.join(',')
+               },
+               success:function(){
+               },
+               error:function(){
+               }
+             });
+           $(document).ready(function(){
+                  tradePay(trade_no);
+               });
+              function ready(callback) {
+                   if (window.AlipayJSBridge) {
+                       callback && callback();
+                   } else {
+                       document.addEventListener('AlipayJSBridgeReady', callback, false);
+                   }
+              }
+              function tradePay(tradeNO) {
+                reqJson.tarde_no=tradeNO;
+                  ready(function(){
+                       AlipayJSBridge.call("tradePay", {
+                            tradeNO: tradeNO
+                       }, function (data) {
+                         //reqJosn.no=trade_no;
+                         switch (data.resultCode) {
+                            case "9000":
+                              reqJson.status="支付成功";
+                              break;
+                            case "6004":
+                              reqJson.status="后台获取支付结果超时";
+                              break;
+                            case "8000":
+                              reqJson.status="支付时网络异常";
+                              break;
+                            case "7001":
+                              reqJson.status="客户端钱包终止支付";
+                              break;
+                            case "6002":
+                              reqJson.status="网络出错";
+                              break;
+                            case "6001":
+                              reqJson.status="用户取消";
+                              break;
+                            case "4000":
+                              alert("订单支付失败");
+                              break;
+                            case "99":
+                              reqJson.status="用户忘记密码";
+                              break;
+                            default:
+                              reqJson.status="其他异常";
+                              break;
+                          }
+                        if(reqJson.status == "支付成功"){
+                          window.location.href="../../sub/end.html";
+                        }
+                       });
+                  });
+              }
+           }
+         );}
+       }
 
 });
+

@@ -170,12 +170,17 @@ aside:before{
     background: -ms-linear-gradient(bottom, #3e4276 0%,#ef9755 100%);
     background: linear-gradient(to top, #3e4276 0%,#ef9755 100%);
 }
+aside .weui-cells{
+	height: 40vh;
+	overflow-y: scroll;
+}
 aside .weui-cell{
 	padding:0;
 }
 aside .weui-cell img{
-	width: 4rem;
-    margin-left: -.5rem;
+	width: 2rem;
+    margin-left: -.2rem;
+    margin-top: .9rem;
 }
 aside .weui-cell span{
 	position: absolute;
@@ -184,16 +189,98 @@ aside .cart_shopName{
 	top: 0.5rem;
     left: 1.5rem;
     font-size: 0.6rem;
-
+	line-height: 1;
 }
 aside .cart_price{
-	top: 1.7rem;
+	top: 2rem;
     left: 1.5rem;
 }
 aside .cart_num{
-	top:1.7rem;
-	right: .45rem;
+	top:2rem;
+	right: 1rem;
 	color:#f39b18;
+}
+aside .weui-cell .weui-cell__bd{
+	height: 10vh;
+    width: 2rem;
+    flex: 0;
+}
+aside .pay{
+	height: 24vh;
+    width: 26%;
+    position: fixed;
+    bottom: 0;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    box-shadow: 0px -5px 24.82px 0.18px rgba(4, 0, 0, 0.17);
+    opacity: 0;
+}
+aside .pay .paydetail{
+	padding: .1rem;
+	width: 98%;
+	height: 75%;
+	position: relative;
+}
+aside .pay .topay{
+	width: 100%;
+	height: 25%;
+	background: -webkit-linear-gradient(left,#020b4e, #014083);
+	background: -o-linear-gradient(right,#020b4e, #014083);
+	background: -moz-linear-gradient(right,#020b4e, #014083);
+	background: linear-gradient(right,#020b4e, #014083);
+}
+#pay{
+	position: relative;
+	color:#c8c8cd;
+	height: 100%;
+	text-align: center;
+    padding-top: 5%;
+}
+#pay:after{
+	content: " ";
+    display: inline-block;
+    height: 6px;
+    width: 6px;
+    border-width: 2px 2px 0 0;
+    border-color: #c8c8cd;
+    border-style: solid;
+    -webkit-transform: matrix(.71,.71,-.71,.71,0,0);
+    transform: matrix(.71,.71,-.71,.71,0,0);
+    position: relative;
+    top: -2px;
+    position: absolute;
+    top: 50%;
+    margin-top: -8px;
+    right: 15%;
+}
+.paydetail p{
+	color: #333333;
+	padding-left: .4rem;
+	line-height: 1.2;
+}
+.paydetail .originalprice{
+    font-size: .7rem;
+    text-decoration-line: line-through;
+    text-decoration-color: #f39b18;
+}
+.paydetail .membership,
+.paydetail .redenvelope{
+	color: #333333;
+    font-size: .1rem;
+    padding-left: .1rem;
+}
+.paydetail .discountprice{
+	color: #f39b18;
+    font-size: 1rem;
+    padding-left: 1rem;
+}
+.noe_red{
+	font-style: italic;
+	color:red;
+}
+.detail_item{
+	position: absolute;
+	bottom:.3rem;
 }
 @media screen and (max-width: 360px) {
     aside .cart_shopName{
@@ -204,5 +291,9 @@ aside .cart_num{
 	}
 	aside .cart_num{
 		font-size: 0.7rem;
+	}
+	.detail_item{
+		position: initial;
+		bottom:0rem;
 	}
 }
