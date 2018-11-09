@@ -28,6 +28,7 @@ $(function(){
       vip_discount: 1,
       redball: '',
       openid: '',
+      coupon_id: 'null',
 			init: function(opendid,vip_lv,vip_discount,redball){
         this.openid = opendid;
         this.redball = redball;
@@ -37,8 +38,9 @@ $(function(){
       bigred: function(){
         var big = 0;
         for(var i in this.redball){
-          if(i.state == 0 && i.amount>big){
-              big = i.amount;
+          if(this.redball[i].state == 0 && this.redball[i].amount>big){
+              big = this.redball[i].amount;
+              this.coupon_id = this.redball[i].coupon_id;
           }
         }
         this.bigred_money = big;
@@ -328,7 +330,7 @@ $(function(){
   function wxPay(){
       //var id="0000100001";
       var goodsid=currentcart.data.goodsids.join(',');
-      var price=currentpayer.discount_money-currentpayer.bigred_money;
+      var price=currentpayer.discount_money.toFixed(2)-currentpayer.bigred_money.toFixed(2);
       var date=new Date();
       var product_id="testwanzhong"+date.getHours()+date.getMinutes()+date.getSeconds();
       var subject;
@@ -340,7 +342,7 @@ $(function(){
       var reqJson={
           //appid:id,
           goodsid:goodsid,
-          price:price,
+          price:price.toFixed(2),
           product_id:product_id,
           subject:subject
       };
@@ -372,7 +374,8 @@ $(function(){
                   method: "微信",
                   out_trade_no: product_id,
                   discount: currentpayer.vip_discount,
-                  passage_nos: currentcart.data.goodspassagenos.join(',')
+                  passage_nos: currentcart.data.goodspassagenos.join(','),
+                  coupon_id: currentpayer.coupon_id
                 },
                 success:function(){
                 },
@@ -415,7 +418,7 @@ $(function(){
                                 break;
                               }
                             if(reqJson.status == "支付成功,请等待出货"){
-                              window.location.href="../../sub/end.html";
+                              window.location.href="../../end.html";
                             }
                           }
                   );
@@ -467,7 +470,8 @@ $(function(){
                  method: "支付宝",
                  out_trade_no: product_id,
                  discount: currentpayer.vip_discount,
-                 passage_nos: currentcart.data.goodspassagenos.join(',')
+                 passage_nos: currentcart.data.goodspassagenos.join(','),
+                 coupon_id: currentpayer.coupon_id
                },
                success:function(){
                },
@@ -521,7 +525,7 @@ $(function(){
                               break;
                           }
                         if(reqJson.status == "支付成功"){
-                          window.location.href="../../sub/end.html";
+                          window.location.href="../../end.html";
                         }
                        });
                   });
