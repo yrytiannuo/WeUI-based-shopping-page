@@ -13,14 +13,14 @@ main{
     height: 57vh;
     background: url(../images/main.png);
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: 100% 100%;
     margin: 0 auto;
     overflow:hidden;
     color:#fff;
 }
 main .content{
 	width: 75%;
-    margin: 18% auto;
+    margin: 16% auto;
     text-align: center;
 }
 main .content img{
@@ -28,17 +28,18 @@ main .content img{
 }
 main p{
 	margin-left: 1em;
-	font-size: 1em;
+	font-size: 1.2em;
 }
 main p:not(:first-child){
 	color:#f39b18;
 	font-size: .8em;
 }
 main p:not(:last-child){
-	margin-bottom: 1em;
+	margin-bottom: 0.5em;
 }
 main p:last-child{
 	color:#fff;
+	margin-top: 0.5em;
 }
 footer{
 	width: 92%;

@@ -272,6 +272,7 @@ $(function(){
     for(var i=0;i<data.length;i++){
       $("#tab"+(i+1)).empty();
       for(var j in data[i]){
+        if(data[i][j]['surplus']>0){
         var $ele = $("<div class='weui-cells'><div class='weui-cell'>"+
                 "<div class='weui-cell__bd'><img src='"+imgurl+data[i][j]['pic']+"'>"+
                 "</div><div class='weui-cell__ft'><h3 class='goodname'>"+j+"</h3><p>"+((data[i][j]['can_discount']==1)?'此商品参与打折':'此商品不参与打折')+"</p>"+
@@ -280,6 +281,7 @@ $(function(){
                 "</span><span class='num'>0</span><span class='plus'><img src='static/images/plus.png'>"+
                 "</span></div></div></div>");
         $("#tab"+(i+1)).append($ele);
+        }
       }
     }
   }
@@ -417,8 +419,8 @@ $(function(){
                                 reqJson.status="支付结果异常";
                                 break;
                               }
-                            if(reqJson.status == "支付成功,请等待出货"){
-                              window.location.href="../../end.html";
+                            if(reqJson.status == "支付成功,等待出货"){
+                              window.location.href="end.html";
                             }
                           }
                   );
@@ -434,8 +436,8 @@ $(function(){
 
   function aliPay(){
       //调起下单接口，记得先引入jquery
-      var goodsid=currentcart.goodsids.join(',');
-      var price=currentpayer.discount_money-currentpayer.bigred_money;
+      var goodsid=currentcart.data.goodsids.join(',');
+      var price=currentpayer.discount_money.toFixed(2)-currentpayer.bigred_money.toFixed(2);
       price = price.toFixed(2);
       var date=new Date();
       var product_id="testwanzhong"+date.getHours()+date.getMinutes()+date.getSeconds();
@@ -525,7 +527,7 @@ $(function(){
                               break;
                           }
                         if(reqJson.status == "支付成功"){
-                          window.location.href="../../end.html";
+                          window.location.href="end.html";
                         }
                        });
                   });
