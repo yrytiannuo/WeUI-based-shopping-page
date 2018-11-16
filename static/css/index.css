@@ -75,6 +75,7 @@ body{
 	box-sizing: border-box;
 	padding: 4% 2%;
 	margin-top: 1.8rem;
+	overflow: scroll;
 }
 .weui-tab__bd-item .weui-cells {
   border-radius: 20px;

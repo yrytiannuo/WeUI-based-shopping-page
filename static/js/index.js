@@ -94,14 +94,17 @@ $(function(){
         $(".pay").css("opacity","1");
         this.data.goodsids.push(goodArrObj[index][name].goods_no);
         this.data.goodsnames.push(name);
-        this.data.goodsprices.push(goodArrObj[index][name].price);
         this.data.goodspassagenos.push(goodArrObj[index][name].passage_no.pop());
         if(goodArrObj[index][name].can_discount == 1){
-          currentpayer.discount_money += Number(goodArrObj[index][name].price)*Number(currentpayer.vip_discount);
+          var m = Number(goodArrObj[index][name].price)*Number(currentpayer.vip_discount);
+          currentpayer.discount_money += m;
           currentpayer.oraigin_money += Number(goodArrObj[index][name].price);
+          this.data.goodsprices.push(m);
         }else{
-          currentpayer.discount_money += Number(goodArrObj[index][name].price);
-          currentpayer.oraigin_money += Number(goodArrObj[index][name].price);
+          var m = Number(goodArrObj[index][name].price);
+          currentpayer.discount_money += m;
+          currentpayer.oraigin_money += m;
+          this.data.goodsprices.push(m);
         }
         if(flag == 1){
           var $ele = $("<div class='weui-cell'><div class='weui-cell__bd'>"+
@@ -179,16 +182,15 @@ $(function(){
     if(r!=null)return unescape(r[2]);
     return null;
   }
-
   //商品列表初始化
   function goodinit(){
     $.ajax({
       type: "POST",
       dataType:"json",
       async: false,
-      url: "passage/shopquery.do",//http://tazrq.xunshengkeji.com/one/
+      url: "http://test.qdwanzhong.top/one/passage/shopquery.do",//http://test.qdwanzhong.top/one/
       data:{
-        vmid : $.cookie('vmid') || "2511551188"
+        vmid : $.cookie('vmid') || "9000000002"
       },
       success:function (data) {
         console.log(data);
